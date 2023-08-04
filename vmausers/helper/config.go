@@ -14,6 +14,16 @@ type Config struct {
 	} `json:"mongodb"`
 }
 
+func NewConfig(Uri string, Replica string, caFilePath string, caKeyFile string) *Config {
+	config := Config{}
+	config.Mongodb.Serveruri = Uri
+	config.Mongodb.ReplicaSet = Replica
+	config.Mongodb.CaFilePath = caFilePath
+	config.Mongodb.CaKeyFilePath = caKeyFile
+
+	return &config
+}
+
 func LoadConfig(configFile string) (Config, error) {
 	f, err := os.ReadFile(configFile)
 
