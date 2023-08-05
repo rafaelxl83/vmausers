@@ -66,7 +66,7 @@ If no flag information provided, the program will try to use the default setting
 The initial approach adopted was to design the behavior to see how attached the understanding to the requirements was.
 
 So, the sequence diagram was created as follows:
-![seqdiagram](sequence_diagram.png)
+![seqdiagram](vmausers_api_diagram-all.png)
 
 The first archiceture chosen was related with a Model View Controller aiming to meet the requirements in the construction of a project that can be scalable and that possible changes in any of the layers are made without interference in the other layers. MVC is based on the separation of data (model), user interface (view), and business logic (controller).
 

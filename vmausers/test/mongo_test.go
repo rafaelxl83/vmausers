@@ -50,11 +50,7 @@ func TestConnected(t *testing.T) {
 }
 
 func TestCreateUser(t *testing.T) {
-	client, _ := helper.Connect(
-		Config.Mongodb.Serveruri,
-		Config.Mongodb.CaFilePath,
-		Config.Mongodb.CaKeyFilePath,
-		Config.Mongodb.ReplicaSet)
+	client, _ := helper.NewConnection(&helper.DBConfig)
 
 	db := client.Database("test_db")
 
@@ -67,11 +63,7 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestReadUser(t *testing.T) {
-	client, _ := helper.Connect(
-		Config.Mongodb.Serveruri,
-		Config.Mongodb.CaFilePath,
-		Config.Mongodb.CaKeyFilePath,
-		Config.Mongodb.ReplicaSet)
+	client, _ := helper.NewConnection(&helper.DBConfig)
 
 	db := client.Database("test_db")
 
@@ -87,11 +79,7 @@ func TestReadUser(t *testing.T) {
 }
 
 func TestUpdateUser(t *testing.T) {
-	client, _ := helper.Connect(
-		Config.Mongodb.Serveruri,
-		Config.Mongodb.CaFilePath,
-		Config.Mongodb.CaKeyFilePath,
-		Config.Mongodb.ReplicaSet)
+	client, _ := helper.NewConnection(&helper.DBConfig)
 
 	db := client.Database("test_db")
 
@@ -110,11 +98,7 @@ func TestUpdateUser(t *testing.T) {
 }
 
 func TestDeleteUser(t *testing.T) {
-	client, _ := helper.Connect(
-		Config.Mongodb.Serveruri,
-		Config.Mongodb.CaFilePath,
-		Config.Mongodb.CaKeyFilePath,
-		Config.Mongodb.ReplicaSet)
+	client, _ := helper.NewConnection(&helper.DBConfig)
 
 	db := client.Database("test_db")
 
