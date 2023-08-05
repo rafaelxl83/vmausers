@@ -1,10 +1,11 @@
-package helper
+package database
 
 import (
 	"context"
 	"fmt"
 	"log"
 	"time"
+	"vmausers/helper"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -15,9 +16,9 @@ type BaseModel struct {
 	UpdatedAt time.Time `bson:"updated_at"`
 }
 
-func NewConnection(config *Config) (*mongo.Client, error) {
+func NewConnection(config *helper.Config) (*mongo.Client, error) {
 	if config == nil {
-		config = &DBConfig
+		config = &helper.AppConfig
 	}
 
 	client, err := Connect(
@@ -63,9 +64,6 @@ func Connect(uri string, caFilePath string, caKeyFilePath string, replicaSet str
 
 func (m *BaseModel) Create(ctx context.Context, db *mongo.Database, collectionName string, model interface{}) error {
 	collection := db.Collection(collectionName)
-
-	m.CreatedAt = time.Now()
-	m.UpdatedAt = time.Now()
 
 	_, err := collection.InsertOne(ctx, model)
 	if err != nil {

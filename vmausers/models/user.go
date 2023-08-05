@@ -1,13 +1,14 @@
 package models
 
 import (
-	"vmausers/helper"
+	"time"
+	"vmausers/database"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type User struct {
-	helper.BaseModel
+	database.BaseModel
 	Address
 	Password
 	Name     string             `bson:"name"`
@@ -31,6 +32,10 @@ func NewUser(
 			Country: Country,
 		},
 		Password: *NewPassword(""),
+		BaseModel: database.BaseModel{
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
 	}
 	return &user
 }

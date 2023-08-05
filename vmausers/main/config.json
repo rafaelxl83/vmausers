@@ -2,7 +2,14 @@
     "mongodb" : {
         "serveruri" : "mongodb+srv://cluster0.t4xtjka.mongodb.net/",
         "replicaSet" : "atlas-xk9ebu-shard-0",
+        "database" : "vmadb",
         "caFilePath" : "D:/temp/VerifyMyAge/certificate/X509-cert-5347953578960200531.crt",
         "certificateKeyFilePath" : "D:/temp/VerifyMyAge/certificate/X509-key-5347953578960200531.pem"
+    },
+    "passwordStrength" : {
+        "minSize" : 8,
+        "mustSpecialChars" : true,
+        "mustNumeric" : true,
+        "mustLowerUpper" : true
     }
 }

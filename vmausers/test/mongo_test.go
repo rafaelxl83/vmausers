@@ -4,6 +4,8 @@ import (
 	"context"
 	_ "fmt" // no more error
 	"testing"
+	"time"
+	"vmausers/database"
 	"vmausers/helper"
 	"vmausers/models"
 
@@ -14,6 +16,7 @@ import (
 var Config helper.Config = *helper.NewConfig(
 	"mongodb+srv://cluster0.t4xtjka.mongodb.net/",
 	"atlas-xk9ebu-shard-0",
+	"test_db",
 	"../../certificate/X509-cert-5347953578960200531.crt",
 	"../../certificate/X509-key-5347953578960200531.pem",
 )
@@ -30,6 +33,10 @@ var TestUser models.User = models.User{
 		Country: "United States",
 	},
 	Password: *models.NewPassword(""),
+	BaseModel: database.BaseModel{
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	},
 }
 
 func SetObjectID() primitive.ObjectID {
@@ -38,7 +45,7 @@ func SetObjectID() primitive.ObjectID {
 }
 
 func TestConnected(t *testing.T) {
-	client, err := helper.Connect(
+	client, err := database.Connect(
 		Config.Mongodb.Serveruri,
 		Config.Mongodb.CaFilePath,
 		Config.Mongodb.CaKeyFilePath,
@@ -50,9 +57,9 @@ func TestConnected(t *testing.T) {
 }
 
 func TestCreateUser(t *testing.T) {
-	client, _ := helper.NewConnection(&helper.DBConfig)
+	client, _ := database.NewConnection(&Config)
 
-	db := client.Database("test_db")
+	db := client.Database(Config.Mongodb.Database)
 
 	// Create a new user
 	err := TestUser.Create(context.Background(), db, "users", &TestUser)
@@ -63,9 +70,9 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestReadUser(t *testing.T) {
-	client, _ := helper.NewConnection(&helper.DBConfig)
+	client, _ := database.NewConnection(&Config)
 
-	db := client.Database("test_db")
+	db := client.Database(Config.Mongodb.Database)
 
 	var readUser models.User
 	err := readUser.Read(context.Background(), db, "users", bson.M{"_id": TestUser.ID}, &readUser)
@@ -79,9 +86,9 @@ func TestReadUser(t *testing.T) {
 }
 
 func TestUpdateUser(t *testing.T) {
-	client, _ := helper.NewConnection(&helper.DBConfig)
+	client, _ := database.NewConnection(&Config)
 
-	db := client.Database("test_db")
+	db := client.Database(Config.Mongodb.Database)
 
 	// Update a user's email
 	email := "john.doe_updated@example.com"
@@ -98,9 +105,9 @@ func TestUpdateUser(t *testing.T) {
 }
 
 func TestDeleteUser(t *testing.T) {
-	client, _ := helper.NewConnection(&helper.DBConfig)
+	client, _ := database.NewConnection(&Config)
 
-	db := client.Database("test_db")
+	db := client.Database(Config.Mongodb.Database)
 
 	// Delete a user by ID
 	err := TestUser.Delete(context.Background(), db, "users", bson.M{"_id": TestUser.ID})
