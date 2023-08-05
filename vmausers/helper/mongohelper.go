@@ -15,6 +15,24 @@ type BaseModel struct {
 	UpdatedAt time.Time `bson:"updated_at"`
 }
 
+func NewConnection(config *Config) (*mongo.Client, error) {
+	if config == nil {
+		config = &DBConfig
+	}
+
+	client, err := Connect(
+		config.Mongodb.Serveruri,
+		config.Mongodb.CaFilePath,
+		config.Mongodb.CaKeyFilePath,
+		config.Mongodb.ReplicaSet)
+	if err != nil {
+		fmt.Printf("Error connecting to the database: %v", err)
+		return nil, err
+	}
+
+	return client, nil
+}
+
 func Connect(uri string, caFilePath string, caKeyFilePath string, replicaSet string) (*mongo.Client, error) {
 	uri += "$external"
 	uri += "?retryWrites=true&readPreference=primary"

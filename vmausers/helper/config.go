@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+var DBConfig Config
+
 type Config struct {
 	Mongodb struct {
 		Serveruri     string `json:"serveruri"`
