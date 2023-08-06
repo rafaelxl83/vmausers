@@ -2,7 +2,6 @@ package database
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 	"vmausers/helper"
@@ -27,7 +26,6 @@ func NewConnection(config *helper.Config) (*mongo.Client, error) {
 		config.Mongodb.CaKeyFilePath,
 		config.Mongodb.ReplicaSet)
 	if err != nil {
-		fmt.Printf("Error connecting to the database: %v", err)
 		return nil, err
 	}
 
@@ -58,12 +56,14 @@ func Connect(uri string, caFilePath string, caKeyFilePath string, replicaSet str
 		log.Fatal(err)
 	}
 
-	fmt.Println("Successfully connected to MongoDB")
 	return client, nil
 }
 
 func (m *BaseModel) Create(ctx context.Context, db *mongo.Database, collectionName string, model interface{}) error {
 	collection := db.Collection(collectionName)
+
+	m.CreatedAt = time.Now()
+	m.UpdatedAt = time.Now()
 
 	_, err := collection.InsertOne(ctx, model)
 	if err != nil {
@@ -73,7 +73,7 @@ func (m *BaseModel) Create(ctx context.Context, db *mongo.Database, collectionNa
 	return nil
 }
 
-func (m *BaseModel) Read(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}, result interface{}) error {
+func (m *BaseModel) ReadOne(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}, result interface{}) error {
 	collection := db.Collection(collectionName)
 
 	err := collection.FindOne(ctx, filter).Decode(result)
@@ -84,11 +84,10 @@ func (m *BaseModel) Read(ctx context.Context, db *mongo.Database, collectionName
 	return nil
 }
 
-func (m *BaseModel) Update(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}, update interface{}) error {
+func (m *BaseModel) UpdateOne(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}, update interface{}) error {
 	collection := db.Collection(collectionName)
 
 	m.UpdatedAt = time.Now()
-
 	_, err := collection.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return err
@@ -97,8 +96,9 @@ func (m *BaseModel) Update(ctx context.Context, db *mongo.Database, collectionNa
 	return nil
 }
 
-func (m *BaseModel) Delete(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}) error {
+func (m *BaseModel) DeleteOne(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}) error {
 	collection := db.Collection(collectionName)
+
 	_, err := collection.DeleteOne(ctx, filter)
 	if err != nil {
 		return err

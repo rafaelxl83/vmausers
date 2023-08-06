@@ -22,10 +22,10 @@ var Config helper.Config = *helper.NewConfig(
 )
 
 var TestUser models.User = models.User{
-	ID:       SetObjectID(),
-	Name:     "John",
-	LastName: "Doe",
-	Email:    "john.doe@example.com",
+	ID:        SetObjectID(),
+	FirstName: "John",
+	LastName:  "Doe",
+	Email:     "john.doe@example.com",
 	Address: models.Address{
 		Street:  "Nowhere",
 		City:    "Caddo",
@@ -33,10 +33,6 @@ var TestUser models.User = models.User{
 		Country: "United States",
 	},
 	Password: *models.NewPassword(""),
-	BaseModel: database.BaseModel{
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	},
 }
 
 func SetObjectID() primitive.ObjectID {
@@ -75,10 +71,10 @@ func TestReadUser(t *testing.T) {
 	db := client.Database(Config.Mongodb.Database)
 
 	var readUser models.User
-	err := readUser.Read(context.Background(), db, "users", bson.M{"_id": TestUser.ID}, &readUser)
+	err := readUser.ReadOne(context.Background(), db, "users", bson.M{"_id": TestUser.ID}, &readUser)
 	if err != nil {
 		_ = TestUser.Create(context.Background(), db, "users", &TestUser)
-		_ = readUser.Read(context.Background(), db, "users", bson.M{"_id": TestUser.ID}, &readUser)
+		_ = readUser.ReadOne(context.Background(), db, "users", bson.M{"_id": TestUser.ID}, &readUser)
 	}
 
 	client.Disconnect(context.Background())
@@ -92,13 +88,8 @@ func TestUpdateUser(t *testing.T) {
 
 	// Update a user's email
 	email := "john.doe_updated@example.com"
-	update := bson.M{"$set": bson.M{"email": email, "updated_at": primitive.NewDateTimeFromTime(TestUser.UpdatedAt)}}
-	err := TestUser.Update(context.Background(), db, "users", bson.M{"_id": TestUser.ID}, update)
-
-	if err != nil {
-		_ = TestUser.Create(context.Background(), db, "users", &TestUser)
-		err = TestUser.Update(context.Background(), db, "users", bson.M{"_id": TestUser.ID}, update)
-	}
+	update := bson.M{"$set": bson.M{"email": email, "basemodel.updated_at": primitive.NewDateTimeFromTime(time.Now())}}
+	err := TestUser.UpdateOne(context.Background(), db, "users", bson.M{"_id": TestUser.ID}, update)
 
 	client.Disconnect(context.Background())
 	AssertEqual(t, err, nil)
@@ -110,12 +101,7 @@ func TestDeleteUser(t *testing.T) {
 	db := client.Database(Config.Mongodb.Database)
 
 	// Delete a user by ID
-	err := TestUser.Delete(context.Background(), db, "users", bson.M{"_id": TestUser.ID})
-
-	if err != nil {
-		_ = TestUser.Create(context.Background(), db, "users", &TestUser)
-		err = TestUser.Delete(context.Background(), db, "users", bson.M{"_id": TestUser.ID})
-	}
+	err := TestUser.DeleteOne(context.Background(), db, "users", bson.M{"_id": TestUser.ID})
 
 	client.Disconnect(context.Background())
 	AssertEqual(t, err, nil)

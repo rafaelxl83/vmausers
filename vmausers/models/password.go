@@ -23,7 +23,7 @@ func NewPassword(pass string) *Password {
 	}
 
 	cryptoText := helper.Encrypt(key, pass)
-	encPass := Password{cryptoText, time.Now(), time.Now()}
+	encPass := Password{cryptoText, time.Now(), time.Now().AddDate(0, 2, 0)}
 	return &encPass
 }
 
