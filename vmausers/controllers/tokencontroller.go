@@ -24,7 +24,6 @@ func GenerateToken(context *gin.Context) {
 	}
 
 	// check if email exists and password is correct
-	//record := database.Instance.Where("email = ?", request.Email).First(&user)
 	user, err := middlewares.GetUserByEmail(request.Email)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -45,5 +44,7 @@ func GenerateToken(context *gin.Context) {
 		context.Abort()
 		return
 	}
+
+	//http://jwt.io/
 	context.JSON(http.StatusOK, gin.H{"token": tokenString})
 }

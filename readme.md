@@ -1,4 +1,37 @@
-# 1 How to run
+# VMA Simple User Rest API CRUD operations
+
+This project aims to provide a basic Rest API to Create/Read/Update/Delete users using MongoDB and a security/trust acceptable level.
+
+Requirements:
+ - Keep the user information: Name, Age, Email, Password and Address
+ - Use Go lang or Node.js
+ - Use MongoDB or MySql
+ - Key evaluation items: robustness, scalability, performance and security
+
+## Development environment specs
+
+Visual Studio Code (version 1.79.2)
+Go lang (version go1.20.7 windows/amd64) library:
+ - github.com/golang-jwt/jwt v3.2.2+incompatible
+ - github.com/gin-gonic/gin v1.9.1
+ - github.com/swaggo/swag v1.16.1
+ - golang.org/x/crypto v0.9.0
+ - golang.org/x/net v0.10.0
+ - go.mongodb.org/mongo-driver v1.12.0
+Atlas MongoDB (https://cloud.mongodb.com/):
+ - M0 Free cluster MongoDB 6.0
+ - Replication Factor 3 Nodes
+ - X.509 Certificates Authentication
+ - Maximum of 500 simultaneous connections
+ - Maximum of 100 databases and 500 collections
+ - Able to deploy to MS Azure, AWS and GCP in a subset of regions
+ - Data Transfer Limits are 10 GB in and 10 GB out per period
+ - Data recovery: always takes a single daily snapshot at the same time
+ - Alerts & Monitoring: Connections, Logical Size, Network and Opscounter
+ - Throughput: 100 operations per second
+Microsoft Windows 11 Pro x64-based PC (Version 10.0 Build 22621)
+Processor: 11th Gen Intel(R) Core(TM) i7-11800H CPU @ 2.30GHz, 16 Core(s)
+Total Physical Memory 32.7 GB
 
 ## 1.1 Configuration file
 

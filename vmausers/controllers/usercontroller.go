@@ -37,6 +37,17 @@ func RegisterUser(context *gin.Context) {
 		return
 	}
 
+	if found, err := middlewares.GetUserByEmail(user.Email); err != nil || found != nil {
+		errMessage := "User already registered"
+		if err != nil {
+			errMessage = err.Error()
+		}
+
+		context.JSON(http.StatusBadRequest, gin.H{"error": errMessage})
+		context.Abort()
+		return
+	}
+
 	if err := user.Password.ValidatePasswordRestrictions(""); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		context.Abort()

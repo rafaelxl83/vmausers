@@ -44,7 +44,7 @@ func StartRouter() *gin.Engine {
 	{
 		api.POST("/token", controllers.GenerateToken)
 		api.POST("/user/register", controllers.RegisterUser)
-		secured := api.Group("/secured").Use(middlewares.Auth())
+		secured := api.Group("/secured").Use(middlewares.Authorization())
 		{
 			secured.GET("/ping", controllers.Ping)
 		}
