@@ -8,11 +8,11 @@ import (
 
 type User struct {
 	database.BaseModel
-	Address
-	Password
-	FirstName string             `bson:"first_name"`
+	Address   Address            `bson:"address" binding:"required"`
+	Password  Password           `bson:"password" binding:"required"`
+	FirstName string             `bson:"first_name" binding:"required"`
 	LastName  string             `bson:"last_name"`
-	Email     string             `bson:"email"`
+	Email     string             `bson:"email" binding:"required,email"`
 	ID        primitive.ObjectID `bson:"_id" json:"id,omitempty"`
 }
 

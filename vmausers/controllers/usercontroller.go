@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strings"
 	"vmausers/middlewares"
 	"vmausers/models"
 
@@ -36,17 +37,18 @@ func RegisterUser(context *gin.Context) {
 		return
 	}
 
-	if err := user.ValidatePasswordRestrictions(""); err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	if err := user.Password.ValidatePasswordRestrictions(""); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
+	user.Password = *models.NewPassword(user.Password.EncryptedPass)
 	if err := middlewares.CreateUser(&user); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "email": user.Email, "username": user.FirstName})
+	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "email": user.Email, "username": user.Email[:strings.IndexByte(user.Email, '@')]})
 }

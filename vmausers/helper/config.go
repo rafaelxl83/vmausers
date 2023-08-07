@@ -42,15 +42,12 @@ func NewConfig(Uri string, Replica string, Database string, caFilePath string, c
 
 func LoadConfig(configFile string) (Config, error) {
 	f, err := os.ReadFile(configFile)
-
 	if err != nil {
 		return Config{}, err
 	}
 
 	data := Config{}
-
 	err = json.Unmarshal([]byte(f), &data)
-
 	if err != nil {
 		return Config{}, err
 	}

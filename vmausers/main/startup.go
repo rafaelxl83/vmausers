@@ -4,9 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"vmausers/controllers"
 	"vmausers/database"
 	"vmausers/helper"
+	"vmausers/middlewares"
 
+	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -33,4 +36,18 @@ func StartDatabase(configFile string) (*mongo.Client, error) {
 	}
 
 	return client, nil
+}
+
+func StartRouter() *gin.Engine {
+	router := gin.Default()
+	api := router.Group("/api")
+	{
+		api.POST("/token", controllers.GenerateToken)
+		api.POST("/user/register", controllers.RegisterUser)
+		secured := api.Group("/secured").Use(middlewares.Auth())
+		{
+			secured.GET("/ping", controllers.Ping)
+		}
+	}
+	return router
 }

@@ -27,7 +27,9 @@ func CreateUser(user *models.User) error {
 
 	db := client.Database(helper.AppConfig.Mongodb.Database)
 
+	user.ID = primitive.NewObjectID()
 	err = user.Create(context.Background(), db, user_collection, &user)
+
 	client.Disconnect(context.Background())
 
 	return err
@@ -127,7 +129,7 @@ func UpdateUserPassword(user *models.User, newPass models.Password) error {
 	db := client.Database(helper.AppConfig.Mongodb.Database)
 	update := bson.M{
 		"$set": bson.M{
-			"password.password":    newPass.EncryptedPass,
+			"password.encrypted":   newPass.EncryptedPass,
 			"password.created_at":  primitive.NewDateTimeFromTime(newPass.CreatedAt),
 			"password.expire":      primitive.NewDateTimeFromTime(newPass.Expire),
 			"basemodel.updated_at": primitive.NewDateTimeFromTime(time.Now()),
