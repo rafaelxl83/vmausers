@@ -75,7 +75,7 @@ func TestClientUpdateUser(t *testing.T) {
 	helper.AppConfig = Config
 
 	update := models.NewUser(
-		"Jhonny", "", 0, "john.doe_updated@example.com",
+		"Jhonny", "", 41, "john.doe@example.com",
 		"Nowhere, 333", "", "", "")
 
 	TestUser.UpdateValues(*update)

@@ -21,6 +21,33 @@ definitions:
     required:
     - encryptedPass
     type: object
+  models.User:
+    properties:
+      address:
+        $ref: '#/definitions/models.Address'
+      age:
+        type: integer
+      createdAt:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      password:
+        $ref: '#/definitions/models.Password'
+      updatedAt:
+        type: string
+    required:
+    - address
+    - age
+    - email
+    - firstName
+    - password
+    type: object
 info:
   contact:
     email: rafael.xavier.lima@gmail.com
@@ -31,7 +58,200 @@ info:
   title: VMA APIs
   version: "1.0"
 paths:
+  /secured/user:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            type: string
+      summary: Endpoint to load a list of users limited to 100
+      tags:
+      - user
+  /secured/user/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Get an user
+      parameters:
+      - description: User Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+      summary: Endpoint to load an user by it's email
+      tags:
+      - user
+  /secured/user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an user
+      parameters:
+      - description: User Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+          schema:
+            type: string
+      summary: Endpoint to exclude an user
+      tags:
+      - user
+  /secured/user/update:
+    put:
+      consumes:
+      - application/json
+      description: Update user information
+      parameters:
+      - in: formData
+        name: age
+        required: true
+        type: integer
+      - in: formData
+        name: createdAt
+        type: string
+      - in: formData
+        name: email
+        required: true
+        type: string
+      - in: formData
+        name: firstName
+        required: true
+        type: string
+      - in: formData
+        name: id
+        type: string
+      - in: formData
+        name: lastName
+        type: string
+      - in: formData
+        name: updatedAt
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "204":
+          description: No Content
+          schema:
+            type: string
+      summary: Endpoint to update common user information
+      tags:
+      - user
+  /secured/user/update/email:
+    put:
+      consumes:
+      - application/json
+      description: Add a new user
+      parameters:
+      - description: User email
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: User newemail
+        in: query
+        name: newemail
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+      summary: Endpoint to register a new user
+      tags:
+      - user
+  /secured/user/update/password:
+    put:
+      consumes:
+      - application/json
+      description: Update the user password
+      parameters:
+      - description: User email
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: User password
+        in: query
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+          schema:
+            type: string
+      summary: Endpoint to update the user password
+      tags:
+      - user
   /user/register:
+    delete:
+      consumes:
+      - application/json
+      description: Add a new user
+      parameters:
+      - description: User Data
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+          schema:
+            type: string
+      summary: Endpoint to register a new user
+      tags:
+      - user
     post:
       consumes:
       - application/json
@@ -66,6 +286,14 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Server Error
           schema:
             type: string
       summary: Endpoint to register a new user

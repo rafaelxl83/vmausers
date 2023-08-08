@@ -12,7 +12,7 @@ const key string = "PhotOp0lym3rRXL4"
 const defaultPass string = "defaultpassword"
 
 type Password struct {
-	EncryptedPass string    `bson:"encrypted" binding:"required,len=8"`
+	EncryptedPass string    `bson:"encrypted"`
 	CreatedAt     time.Time `bson:"created_at"`
 	Expire        time.Time `bson:"expire"`
 }

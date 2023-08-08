@@ -20,7 +20,10 @@ func CreateUser(user *models.User) error {
 
 	db := client.Database(helper.AppConfig.Mongodb.Database)
 
-	user.ID = primitive.NewObjectID()
+	if user.ID.IsZero() {
+		user.ID = primitive.NewObjectID()
+	}
+
 	err = user.Create(context.Background(), db, constants.User_collection, &user)
 
 	client.Disconnect(context.Background())
@@ -41,7 +44,11 @@ func GetUserById(id string) (*models.User, error) {
 	err = user.ReadOne(context.Background(), db, constants.User_collection, bson.M{"_id": objectId}, &user)
 
 	client.Disconnect(context.Background())
-	return &user, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
 
 func GetUserByEmail(email string) (*models.User, error) {
@@ -56,7 +63,11 @@ func GetUserByEmail(email string) (*models.User, error) {
 	err = user.ReadOne(context.Background(), db, constants.User_collection, bson.M{"email": email}, &user)
 
 	client.Disconnect(context.Background())
-	return &user, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
 
 func GetManyUsers() (*[]models.User, error) {
@@ -69,7 +80,11 @@ func GetManyUsers() (*[]models.User, error) {
 	err = user.ReadMany(context.Background(), db, constants.User_collection, bson.D{{}}, &listOfUsers)
 
 	client.Disconnect(context.Background())
-	return &listOfUsers, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &listOfUsers, nil
 }
 
 func DeleteUser(user models.User) error {
@@ -112,14 +127,19 @@ func UpdateUser(user *models.User) error {
 	db := client.Database(helper.AppConfig.Mongodb.Database)
 	update := bson.M{
 		"$set": bson.M{
-			"first_name":           user.FirstName,
-			"last_name":            user.LastName,
-			"email":                user.Email,
-			"address.street":       user.Address.Street,
-			"address.city":         user.Address.City,
-			"address.state":        user.Address.State,
-			"address.country":      user.Address.Country,
-			"basemodel.updated_at": primitive.NewDateTimeFromTime(time.Now()),
+			"first_name": user.FirstName,
+			"last_name":  user.LastName,
+			"email":      user.Email,
+			"age":        user.Age,
+			"address": bson.M{
+				"street":  user.Address.Street,
+				"city":    user.Address.City,
+				"state":   user.Address.State,
+				"country": user.Address.Country,
+			},
+			"basemodel": bson.M{
+				"updated_at": primitive.NewDateTimeFromTime(time.Now()),
+			},
 		},
 	}
 	err = user.UpdateOne(context.Background(), db, constants.User_collection, bson.M{"_id": user.ID}, update)

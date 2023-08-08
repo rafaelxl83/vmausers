@@ -27,6 +27,7 @@ var TestUser models.User = models.User{
 	ID:        SetObjectID(),
 	FirstName: "John",
 	LastName:  "Doe",
+	Age:       40,
 	Email:     "john.doe@example.com",
 	Address: models.Address{
 		Street:  "Nowhere",

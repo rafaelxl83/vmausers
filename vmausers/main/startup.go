@@ -14,9 +14,11 @@ import (
 	docs "vmausers/docs"
 
 	"github.com/gin-gonic/gin"
+	"github.com/julienschmidt/httprouter"
 	cors "github.com/rs/cors/wrapper/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -73,7 +75,7 @@ func StartRouter() *gin.Engine {
 				)
 			})
 
-			secured.GET("/user", controllers.GetManyUsers)
+			secured.GET("/users", controllers.GetManyUsers)
 			secured.GET("/user/:email", controllers.GetUserByEmail)
 
 			secured.PUT("/user", controllers.UpdateUser)
@@ -85,5 +87,21 @@ func StartRouter() *gin.Engine {
 
 		api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
+
 	return router
+}
+
+func SwaggerRouter() error {
+	router := httprouter.New()
+
+	router.ServeFiles("/api/doc/static/*filepath", http.Dir("api/swagger/static"))
+	router.HandlerFunc(http.MethodGet, "/api/doc/index.html", swaggerHandler)
+	// router.HandlerFunc(http.MethodGet, "/api/doc", swaggerHandler)
+
+	fmt.Println("Server on port 8080")
+	return http.ListenAndServe(":8080", router)
+}
+
+func swaggerHandler(res http.ResponseWriter, req *http.Request) {
+	httpSwagger.WrapHandler(res, req)
 }

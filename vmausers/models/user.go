@@ -10,11 +10,11 @@ import (
 
 type User struct {
 	database.BaseModel
-	Address   Address            `bson:"address" binding:"required"`
-	Password  Password           `bson:"password" binding:"required"`
+	Address   Address            `bson:"address"`
+	Password  Password           `bson:"password"`
 	FirstName string             `bson:"first_name" binding:"required"`
 	LastName  string             `bson:"last_name"`
-	Age       int                `bson:"age" binding:"required"`
+	Age       int                `bson:"age"`
 	Email     string             `bson:"email" binding:"required,email"`
 	ID        primitive.ObjectID `bson:"_id" json:"id,omitempty"`
 }
