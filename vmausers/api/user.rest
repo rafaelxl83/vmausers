@@ -46,7 +46,7 @@ authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4uZG9l
 ###
 
 // Get registered users
-GET http://{{host}}/api/{{version}}/secured/users HTTP/1.1
+GET http://{{host}}/api/{{version}}/secured/user HTTP/1.1
 content-type: application/json
 authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4uZG9lIiwiZW1haWwiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImV4cCI6MTY5MTUwOTc4M30.8SF2R3ox8kpW7dqAdbo2dvC5YAWO1ofp-DuWW9BbIHo
 ###

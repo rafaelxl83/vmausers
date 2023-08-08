@@ -2,10 +2,10 @@ package database
 
 import (
 	"context"
-	"log"
 	"time"
 	"vmausers/helper"
 
+	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -48,12 +48,12 @@ func Connect(uri string, caFilePath string, caKeyFilePath string, replicaSet str
 	client, err := mongo.Connect(context.Background(), clientOptions)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Connect: client connect [%v]", err)
 	}
 
 	err = client.Ping(context.Background(), nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Connect: client ping [%v]", err)
 	}
 
 	return client, nil

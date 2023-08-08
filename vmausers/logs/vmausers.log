@@ -1,0 +1,50 @@
+time="Tue, 08 Aug 2023 19:07:45 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:07:45 -0300" level=info msg="GetRatingList: [0]"
+time="Tue, 08 Aug 2023 19:08:18 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:09:35 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:09:42 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:10:22 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:10:25 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:10:41 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:10:41 -0300" level=info msg="GetAgeRating: [{Teen 13  is suitable for ages 13 and over, including violence, suggestive themes, crude humor, minimal blood, and/or infrequent use of strong language.}]"
+time="Tue, 08 Aug 2023 19:10:54 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:10:54 -0300" level=info msg="GetAgeRating: [{Mature 17+ 17 believes is suitable for ages 17 and over, including intense violence, blood and gore, sexual content, strong language, drug use, nudity, and/or crude humor.}]"
+time="Tue, 08 Aug 2023 19:11:12 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:11:12 -0300" level=info msg="GetAgeRating: [{Mature 17+ 17 believes is suitable for ages 17 and over, including intense violence, blood and gore, sexual content, strong language, drug use, nudity, and/or crude humor.}]"
+time="Tue, 08 Aug 2023 19:12:10 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:12:10 -0300" level=error msg="GetAgeRating: No Content [15]"
+time="Tue, 08 Aug 2023 19:12:13 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:12:13 -0300" level=error msg="GetAgeRating: No Content [15]"
+time="Tue, 08 Aug 2023 19:14:51 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:14:51 -0300" level=info msg="GetAgeRating: [{Rating Pending – Likely Mature 17+ 256 This symbol is used in promotional materials for games which have not yet been assigned a final rating by the ESRB, but are anticipated to carry a \"Mature 17+\" rating.}]"
+time="Tue, 08 Aug 2023 19:15:25 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:15:25 -0300" level=info msg="GetAgeRating: [{Teen 13  is suitable for ages 13 and over, including violence, suggestive themes, crude humor, minimal blood, and/or infrequent use of strong language.}]"
+time="Tue, 08 Aug 2023 19:15:34 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:15:34 -0300" level=info msg="GetAgeRating: [{Teen 13  is suitable for ages 13 and over, including violence, suggestive themes, crude humor, minimal blood, and/or infrequent use of strong language.}]"
+time="Tue, 08 Aug 2023 19:15:50 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:15:50 -0300" level=info msg="GetAgeRating: [{Mature 17+ 17 believes is suitable for ages 17 and over, including intense violence, blood and gore, sexual content, strong language, drug use, nudity, and/or crude humor.}]"
+time="Tue, 08 Aug 2023 19:16:05 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:16:05 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:16:29 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:16:29 -0300" level=info msg="GetAgeRating: [{Mature 17+ 17 believes is suitable for ages 17 and over, including intense violence, blood and gore, sexual content, strong language, drug use, nudity, and/or crude humor.}]"
+time="Tue, 08 Aug 2023 19:17:14 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:17:14 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:17:20 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:17:20 -0300" level=info msg="GetAgeRating: [{Teen 13  is suitable for ages 13 and over, including violence, suggestive themes, crude humor, minimal blood, and/or infrequent use of strong language.}]"
+time="Tue, 08 Aug 2023 19:17:29 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:17:29 -0300" level=info msg="GetAgeRating: [{Mature 17+ 17 believes is suitable for ages 17 and over, including intense violence, blood and gore, sexual content, strong language, drug use, nudity, and/or crude humor.}]"
+time="Tue, 08 Aug 2023 19:17:36 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:17:36 -0300" level=info msg="GetAgeRating: [{Everyone 0 Content is suitable for all ages, including minimal cartoon, fantasy or mild violence, and/or the infrequent use of mild language}]"
+time="Tue, 08 Aug 2023 19:17:42 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:17:42 -0300" level=info msg="GetAgeRating: [{Everyone 10+ 10 Content believes is suitable for ages 10 and over, including cartoon, fantasy, or mild violence, mild language, and/or minimal suggestive themes.}]"
+time="Tue, 08 Aug 2023 19:17:54 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:17:54 -0300" level=info msg="GetAgeRating: [{Everyone 0 Content is suitable for all ages, including minimal cartoon, fantasy or mild violence, and/or the infrequent use of mild language}]"
+time="Tue, 08 Aug 2023 19:18:03 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:18:03 -0300" level=info msg="GetAgeRating: [{Teen 13  is suitable for ages 13 and over, including violence, suggestive themes, crude humor, minimal blood, and/or infrequent use of strong language.}]"
+time="Tue, 08 Aug 2023 19:18:14 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:18:14 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:19:00 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:19:04 -0300" level=info msg="GetUserRatingByEmail: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:29:07 -0300" level=error msg="Authorization: Unauthorized [v&{%!](base64.CorruptInputError=43) %!](uint32=4) %!](string=)}"
+time="Tue, 08 Aug 2023 19:31:11 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:31:11 -0300" level=info msg="GetRatingList: [7]"

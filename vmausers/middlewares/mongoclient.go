@@ -10,9 +10,12 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func CreateUser(user *models.User) error {
+	log.Debugf("CreateUser: start [%v]", user.Email)
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
 		return err
@@ -27,11 +30,12 @@ func CreateUser(user *models.User) error {
 	err = user.Create(context.Background(), db, constants.User_collection, &user)
 
 	client.Disconnect(context.Background())
-
+	log.Debugf("CreateUser: end [%v]", user.Email)
 	return err
 }
 
 func GetUserById(id string) (*models.User, error) {
+	log.Debugf("GetUserById: start [%v]", id)
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
 		return nil, err
@@ -48,10 +52,12 @@ func GetUserById(id string) (*models.User, error) {
 		return nil, err
 	}
 
+	log.Debugf("GetUserById: end [%v]", id)
 	return &user, nil
 }
 
 func GetUserByEmail(email string) (*models.User, error) {
+	log.Debugf("GetUserByEmail: start [%v]", email)
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
 		return nil, err
@@ -67,10 +73,12 @@ func GetUserByEmail(email string) (*models.User, error) {
 		return nil, err
 	}
 
+	log.Debugf("GetUserByEmail: end [%v]", email)
 	return &user, nil
 }
 
 func GetManyUsers() (*[]models.User, error) {
+	log.Debugf("GetManyUsers: start")
 	client, err := database.NewConnection(&helper.AppConfig)
 
 	db := client.Database(helper.AppConfig.Mongodb.Database)
@@ -84,10 +92,12 @@ func GetManyUsers() (*[]models.User, error) {
 		return nil, err
 	}
 
+	log.Debugf("GetManyUsers: end [%v]", len(listOfUsers))
 	return &listOfUsers, nil
 }
 
 func DeleteUser(user models.User) error {
+	log.Debugf("DeleteUser: start [%v]", user.Email)
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
 		return err
@@ -97,28 +107,34 @@ func DeleteUser(user models.User) error {
 	err = user.DeleteOne(context.Background(), db, constants.User_collection, bson.M{"_id": user.ID})
 
 	client.Disconnect(context.Background())
+	log.Debugf("DeleteUser: end [%v]", user.Email)
 	return err
 }
 
 func DeleteUserById(id string) error {
+	log.Debugf("DeleteUserById: start [%v]", id)
 	user, err := GetUserById(id)
 	if err != nil {
 		err = DeleteUser(*user)
 	}
 
+	log.Debugf("DeleteUserById: end [%v]", id)
 	return err
 }
 
 func DeleteUserByEmail(email string) error {
+	log.Debugf("DeleteUserByEmail: start [%v]", email)
 	user, err := GetUserByEmail(email)
 	if err != nil {
 		err = DeleteUser(*user)
 	}
 
+	log.Debugf("DeleteUserByEmail: end [%v]", email)
 	return err
 }
 
 func UpdateUser(user *models.User) error {
+	log.Debugf("UpdateUser: start [%v]", user.Email)
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
 		return err
@@ -145,10 +161,12 @@ func UpdateUser(user *models.User) error {
 	err = user.UpdateOne(context.Background(), db, constants.User_collection, bson.M{"_id": user.ID}, update)
 
 	client.Disconnect(context.Background())
+	log.Debugf("UpdateUser: end [%v]", user.Email)
 	return err
 }
 
 func UpdateUserPassword(user *models.User, newPass models.Password) error {
+	log.Debugf("UpdateUserPassword: start [%v]", user.Email)
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
 		return err
@@ -169,10 +187,12 @@ func UpdateUserPassword(user *models.User, newPass models.Password) error {
 	}
 
 	client.Disconnect(context.Background())
+	log.Debugf("UpdateUserPassword: end [%v]", user.Email)
 	return err
 }
 
 func UpdateUserEmail(user *models.User, newEmail string) error {
+	log.Debugf("UpdateUserEmail: start [%v]", user.Email)
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
 		return err
@@ -191,5 +211,6 @@ func UpdateUserEmail(user *models.User, newEmail string) error {
 	}
 
 	client.Disconnect(context.Background())
+	log.Debugf("UpdateUserEmail: end [%v]", user.Email)
 	return err
 }

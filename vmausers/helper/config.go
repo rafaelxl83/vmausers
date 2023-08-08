@@ -8,6 +8,12 @@ import (
 var AppConfig Config
 
 type Config struct {
+	Logging struct {
+		LogFile    string `json:"logFile"`
+		MaxSizeMB  int    `json:"maxSize"`
+		MaxBackups int    `json:"backups"`
+		MaxAge     int    `json:"maxAge"`
+	} `json:"loggin"`
 	Mongodb struct {
 		Serveruri     string `json:"serveruri"`
 		ReplicaSet    string `json:"replicaSet"`

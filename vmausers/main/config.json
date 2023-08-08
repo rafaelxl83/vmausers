@@ -1,4 +1,10 @@
 {
+    "loggin" : {
+        "logFile" : "D:/temp/VerifyMyAge/vmausers/logs/vmausers.log",
+        "maxSize" : 5,
+        "backups" : 5,
+        "maxAge" : 30
+    },
     "mongodb" : {
         "serveruri" : "mongodb+srv://cluster0.t4xtjka.mongodb.net/",
         "replicaSet" : "atlas-xk9ebu-shard-0",
@@ -43,12 +49,12 @@
             },
             {
                 "rating": "Rating Pending", 
-                "minAge": -1, 
+                "minAge": 255, 
                 "description": "This symbol is used in promotional materials for games which have not yet been assigned a final rating by the ESRB."
             },
             {
                 "rating": "Rating Pending – Likely Mature 17+", 
-                "minAge": 0, 
+                "minAge": 256, 
                 "description": "This symbol is used in promotional materials for games which have not yet been assigned a final rating by the ESRB, but are anticipated to carry a \"Mature 17+\" rating."
             }
         ]

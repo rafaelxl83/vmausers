@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"net/http"
 	"os"
+	"sort"
 	"vmausers/constants"
 	"vmausers/controllers"
 	"vmausers/database"
@@ -19,32 +21,42 @@ import (
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	httpSwagger "github.com/swaggo/http-swagger"
-	"go.mongodb.org/mongo-driver/mongo"
+
+	log "github.com/sirupsen/logrus"
 )
 
-func StartDatabase(configFile string) (*mongo.Client, error) {
+func StartBase(configFile string) {
 	file := flag.String("config", configFile, "a config file")
 	flag.Parse()
 
 	_, err := os.Stat(*file)
 	if err != nil {
 		fmt.Printf("File not found: %v", err)
-		return nil, err
+		os.Exit(1)
 	}
 
 	helper.AppConfig, err = helper.LoadConfig(*file)
 	if err != nil || len(helper.AppConfig.Mongodb.Serveruri) == 0 {
 		fmt.Printf("Error opening the config file: %v", err)
-		return nil, err
+		os.Exit(1)
 	}
 
+	sort.Slice(helper.AppConfig.RatingBoard.Ratings, func(i, j int) bool {
+		return helper.AppConfig.RatingBoard.Ratings[i].MinAge <= helper.AppConfig.RatingBoard.Ratings[j].MinAge
+	})
+
+	helper.InitLogger()
+	fmt.Println("Base configuration OK")
+}
+
+func CheckDatabase() {
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
-		fmt.Printf("Error connecting to the database: %v", err)
-		return nil, err
+		log.Fatalf("Error connecting to the database: %v", err)
 	}
 
-	return client, nil
+	client.Disconnect(context.Background())
+	fmt.Println("Database OK")
 }
 
 func StartRouter() *gin.Engine {
@@ -54,8 +66,8 @@ func StartRouter() *gin.Engine {
 	router.Use(cors.AllowAll())
 
 	// command <vmausers>swag init -g ./main/main.go -o ./docs
-	docs.SwaggerInfo.BasePath = "/api/" + constants.Api_version
-	api := router.Group("/api/" + constants.Api_version)
+	docs.SwaggerInfo.BasePath = constants.Api_base_path + "/" + constants.Api_version
+	api := router.Group(constants.Api_base_path + "/" + constants.Api_version)
 	{
 		api.GET("/", func(c *gin.Context) {
 			c.JSON(
@@ -64,9 +76,9 @@ func StartRouter() *gin.Engine {
 			)
 		})
 
-		api.POST("/token", controllers.GenerateToken)
-		api.POST("/user/register", controllers.RegisterUser)
-		secured := api.Group("/secured").Use(middlewares.Authorization())
+		api.POST(constants.Api_token_path, controllers.GenerateToken)
+		api.POST(constants.Api_user_path+"/register", controllers.RegisterUser)
+		secured := api.Group(constants.Api_secured_path).Use(middlewares.Authorization())
 		{
 			secured.GET("/", func(c *gin.Context) {
 				c.JSON(
@@ -75,19 +87,24 @@ func StartRouter() *gin.Engine {
 				)
 			})
 
-			secured.GET("/users", controllers.GetManyUsers)
-			secured.GET("/user/:email", controllers.GetUserByEmail)
+			secured.GET(constants.Api_user_path, controllers.GetManyUsers)
+			secured.GET(constants.Api_user_path+"/:email", controllers.GetUserByEmail)
 
-			secured.PUT("/user", controllers.UpdateUser)
-			secured.PUT("/user/update/email", controllers.UpdateUserEmail)
-			secured.PUT("/user/update/password", controllers.UpdateUserPassword)
+			secured.PUT(constants.Api_user_path, controllers.UpdateUser)
+			secured.PUT(constants.Api_user_path+"/update/email", controllers.UpdateUserEmail)
+			secured.PUT(constants.Api_user_path+"/update/password", controllers.UpdateUserPassword)
 
-			secured.DELETE("/user/:email", controllers.DeleteUserByEmail)
+			secured.DELETE(constants.Api_user_path+"/:email", controllers.DeleteUserByEmail)
+
+			secured.GET(constants.Api_rating_path, controllers.GetRatingList)
+			secured.GET(constants.Api_rating_path+"/byage/:age", controllers.GetAgeRating)
+			secured.GET(constants.Api_rating_path+"/user/byemail/:email", controllers.GetUserRatingByEmail)
 		}
 
 		api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
 
+	fmt.Println("Router OK")
 	return router
 }
 

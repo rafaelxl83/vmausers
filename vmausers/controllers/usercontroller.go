@@ -7,6 +7,7 @@ import (
 	"vmausers/models"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 func ValidatePasswordRestrictions(providedPassword string) error {
@@ -37,20 +38,24 @@ func CheckPassword(user models.User, providedPassword string) error {
 // @Produce json
 // @Param user formData models.User true "User Data"
 // @Success 200 {object} models.User
+// @Failure 204 {string} string "No Content"
 // @Failure 400 {string} string "Bad request"
+// @Failure 406 {string} string "Not Acceptable"
 // @Failure 500 {string} string "Server Error"
 // @Router /user/register [post]
 func RegisterUser(context *gin.Context) {
 	var user models.User
 
 	if err := context.ShouldBindJSON(&user); err != nil {
+		log.Errorf("RegisterUser: Bad Request [%v]", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
 	if !models.IsEmailValid(user.Email) {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email"})
+		log.Errorf("RegisterUser: Not Acceptable [%v][Invalid email format]", user)
+		context.JSON(http.StatusNotAcceptable, gin.H{"error": "Invalid email"})
 		context.Abort()
 		return
 	}
@@ -61,35 +66,41 @@ func RegisterUser(context *gin.Context) {
 			errMessage = err.Error()
 		}
 
+		log.Errorf("RegisterUser: Bad Request [%v][%v]", user, err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": errMessage})
 		context.Abort()
 		return
 	}
 
 	if err := user.Password.ValidatePasswordRestrictions(""); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		log.Errorf("RegisterUser: Not Acceptable [%v][%v]", user, err)
+		context.JSON(http.StatusNotAcceptable, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
 	user.Password = *models.NewPassword(user.Password.EncryptedPass)
 	if err := middlewares.CreateUser(&user); err != nil {
+		log.Errorf("RegisterUser: Internal Server Error [%v][%v]", user, err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
+	log.Infof("RegisterUser: [%v]", user)
 	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "email": user.Email, "username": user.Email[:strings.IndexByte(user.Email, '@')]})
 }
 
 func GetUserById(context *gin.Context) {
 	user, err := middlewares.GetUserById(context.Param("id"))
 	if err != nil {
+		log.Errorf("GetUserById: Bad Request [%v]", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": err})
 		context.Abort()
 		return
 	}
 
+	log.Infof("GetUserById: [%v]", user)
 	context.JSON(http.StatusOK, gin.H{"user": user})
 }
 
@@ -107,11 +118,13 @@ func GetUserById(context *gin.Context) {
 func GetUserByEmail(context *gin.Context) {
 	user, err := middlewares.GetUserByEmail(context.Param("email"))
 	if err != nil {
+		log.Errorf("GetUserByEmail: Bad Request [%v]", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": err})
 		context.Abort()
 		return
 	}
 
+	log.Infof("GetUserByEmail: [%v]", user)
 	context.JSON(http.StatusOK, gin.H{"user": user})
 }
 
@@ -128,11 +141,13 @@ func GetUserByEmail(context *gin.Context) {
 func GetManyUsers(context *gin.Context) {
 	usersList, err := middlewares.GetManyUsers()
 	if err != nil {
+		log.Errorf("GetManyUsers: Bad Request [%v]", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": err})
 		context.Abort()
 		return
 	}
 
+	log.Infof("GetManyUsers: [%v]", len(*usersList))
 	context.JSON(http.StatusOK, gin.H{"users": usersList})
 }
 
@@ -151,6 +166,7 @@ func UpdateUser(context *gin.Context) {
 	var user models.User
 
 	if err := context.ShouldBindJSON(&user); err != nil {
+		log.Errorf("UpdateUser: No Content [%v]", err)
 		context.JSON(http.StatusNoContent, gin.H{"error": err.Error()})
 		context.Abort()
 		return
@@ -160,11 +176,13 @@ func UpdateUser(context *gin.Context) {
 	currUser.UpdateValues(user)
 
 	if err = middlewares.UpdateUser(currUser); err != nil {
+		log.Errorf("UpdateUser: No Content [%v]", err)
 		context.JSON(http.StatusNoContent, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
+	log.Infof("UpdateUser: [%v][%v]", currUser, user)
 	context.JSON(http.StatusOK, gin.H{"user": currUser})
 }
 
@@ -178,17 +196,20 @@ func UpdateUser(context *gin.Context) {
 // @Param email query string true "User email"
 // @Param password query string true "User password"
 // @Success 200
-// @Failure 400 {string} string "Bad request"
+// @Failure 204 {string} string "No Content"
+// @Failure 400 {string} string "Bad Request"
 // @Router /secured/user/update/password [put]
 func UpdateUserPassword(context *gin.Context) {
 	user, err := middlewares.GetUserByEmail(context.Query("email"))
 	if err != nil {
+		log.Errorf("UpdateUserPassword: No Content [%v]", err)
 		context.JSON(http.StatusNoContent, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
 	if err := user.Password.ValidatePasswordRestrictions(context.Param("password")); err != nil {
+		log.Errorf("UpdateUserPassword: Bad Request [%v]", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		context.Abort()
 		return
@@ -196,11 +217,13 @@ func UpdateUserPassword(context *gin.Context) {
 
 	newPassword := models.NewPassword(context.Query("password"))
 	if err := middlewares.UpdateUserPassword(user, *newPassword); err != nil {
+		log.Warnf("UpdateUserPassword: No Content [%v]", err)
 		context.JSON(http.StatusNoContent, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
+	log.Infof("UpdateUserPassword: [%v][%v]", user, newPassword)
 	context.JSON(http.StatusOK, gin.H{})
 }
 
@@ -214,29 +237,35 @@ func UpdateUserPassword(context *gin.Context) {
 // @Param email query string true "User email"
 // @Param newemail query string true "User newemail"
 // @Success 200 {object} models.User
+// @Failure 204 {string} string "No Content"
 // @Failure 400 {string} string "Bad request"
 // @Router /secured/user/update/email [put]
 func UpdateUserEmail(context *gin.Context) {
 	user, err := middlewares.GetUserByEmail(context.Query("email"))
 	if err != nil {
+		log.Warnf("UpdateUserEmail: No Content [%v]", err)
 		context.JSON(http.StatusNoContent, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
-	if !models.IsEmailValid(context.Query("newemail")) {
+	newEmail := context.Query("newemail")
+	if !models.IsEmailValid(newEmail) {
+		log.Warnf("UpdateUserEmail: Bad Request [%v][%v]", newEmail, err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email"})
 		context.Abort()
 		return
 	}
 
-	err = middlewares.UpdateUserEmail(user, context.Param("newemail"))
+	err = middlewares.UpdateUserEmail(user, newEmail)
 	if err != nil {
+		log.Errorf("UpdateUserEmail: No Content [%v][%v]", newEmail, err)
 		context.JSON(http.StatusNoContent, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
+	log.Infof("UpdateUserEmail: [%v][%v]", user, newEmail)
 	context.JSON(http.StatusOK, gin.H{"user": user})
 }
 
@@ -249,16 +278,18 @@ func UpdateUserEmail(context *gin.Context) {
 // @Produce json
 // @Param id path string true "User Id"
 // @Success 200
-// @Failure 400 {string} string "Bad request"
+// @Failure 204 {string} string "No Content"
 // @Router /secured/user/{id} [delete]
 func DeleteUserById(context *gin.Context) {
 	err := middlewares.DeleteUserById(context.Param("id"))
 	if err != nil {
+		log.Errorf("DeleteUserById: No Content [%v]", err)
 		context.JSON(http.StatusNoContent, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
+	log.Infof("DeleteUserById: [%v]", context.Param("id"))
 	context.JSON(http.StatusOK, gin.H{})
 }
 
@@ -271,15 +302,17 @@ func DeleteUserById(context *gin.Context) {
 // @Produce json
 // @Param email path string true "User Data"
 // @Success 200
-// @Failure 400 {string} string "Bad request"
+// @Failure 204 {string} string "No Content"
 // @Router /user/register [delete]
 func DeleteUserByEmail(context *gin.Context) {
 	err := middlewares.DeleteUserByEmail(context.Param("email"))
 	if err != nil {
+		log.Errorf("DeleteUserByEmail: No Content [%v]", err)
 		context.JSON(http.StatusNoContent, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 
+	log.Infof("DeleteUserByEmail: [%v]", context.Param("email"))
 	context.JSON(http.StatusOK, gin.H{})
 }
