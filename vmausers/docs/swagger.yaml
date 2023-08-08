@@ -1,0 +1,79 @@
+definitions:
+  models.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+    type: object
+  models.Password:
+    properties:
+      createdAt:
+        type: string
+      encryptedPass:
+        type: string
+      expire:
+        type: string
+    required:
+    - encryptedPass
+    type: object
+info:
+  contact:
+    email: rafael.xavier.lima@gmail.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: VMA Swagger APIs.
+  termsOfService: http://swagger.io/terms/
+  title: VMA APIs
+  version: "1.0"
+paths:
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Add a new user
+      parameters:
+      - in: formData
+        name: age
+        required: true
+        type: integer
+      - in: formData
+        name: createdAt
+        type: string
+      - in: formData
+        name: email
+        required: true
+        type: string
+      - in: formData
+        name: firstName
+        required: true
+        type: string
+      - in: formData
+        name: id
+        type: string
+      - in: formData
+        name: lastName
+        type: string
+      - in: formData
+        name: updatedAt
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Endpoint to register a new user
+      tags:
+      - user
+securityDefinitions:
+  JWT:
+    in: header
+    name: token
+    type: apiKey
+swagger: "2.0"

@@ -21,6 +21,8 @@ var Config helper.Config = *helper.NewConfig(
 	"../../certificate/X509-key-5347953578960200531.pem",
 )
 
+var TestUserId = "64cd5d112a05e4baff910531"
+
 var TestUser models.User = models.User{
 	ID:        SetObjectID(),
 	FirstName: "John",
@@ -36,7 +38,7 @@ var TestUser models.User = models.User{
 }
 
 func SetObjectID() primitive.ObjectID {
-	id, _ := primitive.ObjectIDFromHex("64cd5d112a05e4baff910531")
+	id, _ := primitive.ObjectIDFromHex(TestUserId)
 	return id
 }
 
@@ -79,6 +81,22 @@ func TestReadUser(t *testing.T) {
 
 	client.Disconnect(context.Background())
 	AssertEqual(t, TestUser.ID, readUser.ID)
+}
+
+func TestReadManyUsers(t *testing.T) {
+	client, err := database.NewConnection(&Config)
+
+	db := client.Database(Config.Mongodb.Database)
+
+	var listOfUsers []models.User
+	err = TestUser.ReadMany(context.Background(), db, "users", bson.D{{}}, &listOfUsers)
+	if err != nil {
+		_ = TestUser.Create(context.Background(), db, "users", &TestUser)
+		_ = TestUser.ReadMany(context.Background(), db, "users", bson.D{{}}, &listOfUsers)
+	}
+
+	client.Disconnect(context.Background())
+	AssertNotEqual(t, len(listOfUsers), 0)
 }
 
 func TestUpdateUser(t *testing.T) {

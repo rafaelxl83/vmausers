@@ -73,6 +73,25 @@ func (m *BaseModel) Create(ctx context.Context, db *mongo.Database, collectionNa
 	return nil
 }
 
+func (m *BaseModel) ReadMany(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}, results interface{}) error {
+	collection := db.Collection(collectionName)
+
+	opts := options.Find().SetLimit(100)
+	cursor, err := collection.Find(ctx, filter, opts)
+	if err != nil {
+		return err
+	}
+
+	err = cursor.All(ctx, results)
+	if err != nil {
+		return err
+	}
+
+	cursor.Close(ctx)
+
+	return nil
+}
+
 func (m *BaseModel) ReadOne(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}, result interface{}) error {
 	collection := db.Collection(collectionName)
 

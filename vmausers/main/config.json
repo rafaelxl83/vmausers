@@ -11,5 +11,46 @@
         "mustSpecialChars" : true,
         "mustNumeric" : true,
         "mustLowerUpper" : true
+    },
+    "ratingBoard" : {
+        "name" : "Entertainment Software Rating Board (ESRB)",
+        "website" : "https://www.esrb.org/ratings-guide/",
+        "ratings" : [
+            {
+                "rating": "Everyone", 
+                "minAge": 0, 
+                "description": "Content is suitable for all ages, including minimal cartoon, fantasy or mild violence, and/or the infrequent use of mild language"
+            },
+            {
+                "rating": "Everyone 10+", 
+                "minAge": 10, 
+                "description": "Content believes is suitable for ages 10 and over, including cartoon, fantasy, or mild violence, mild language, and/or minimal suggestive themes."
+            },
+            {
+                "rating": "Teen", 
+                "minAge": 13, 
+                "description": " is suitable for ages 13 and over, including violence, suggestive themes, crude humor, minimal blood, and/or infrequent use of strong language."
+            },
+            {
+                "rating": "Mature 17+", 
+                "minAge": 17, 
+                "description": "believes is suitable for ages 17 and over, including intense violence, blood and gore, sexual content, strong language, drug use, nudity, and/or crude humor."
+            },
+            {
+                "rating": "Adults Only", 
+                "minAge": 18, 
+                "description": " is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money."
+            },
+            {
+                "rating": "Rating Pending", 
+                "minAge": -1, 
+                "description": "This symbol is used in promotional materials for games which have not yet been assigned a final rating by the ESRB."
+            },
+            {
+                "rating": "Rating Pending – Likely Mature 17+", 
+                "minAge": 0, 
+                "description": "This symbol is used in promotional materials for games which have not yet been assigned a final rating by the ESRB, but are anticipated to carry a \"Mature 17+\" rating."
+            }
+        ]
     }
 }

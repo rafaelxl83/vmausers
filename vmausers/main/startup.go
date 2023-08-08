@@ -3,13 +3,20 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
+	"vmausers/constants"
 	"vmausers/controllers"
 	"vmausers/database"
 	"vmausers/helper"
 	"vmausers/middlewares"
 
+	docs "vmausers/docs"
+
 	"github.com/gin-gonic/gin"
+	cors "github.com/rs/cors/wrapper/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -40,14 +47,43 @@ func StartDatabase(configFile string) (*mongo.Client, error) {
 
 func StartRouter() *gin.Engine {
 	router := gin.Default()
-	api := router.Group("/api")
+	router.StaticFS("/static", http.Dir("./Static"))
+	router.Use(gin.Recovery())
+	router.Use(cors.AllowAll())
+
+	// command <vmausers>swag init -g ./main/main.go -o ./docs
+	docs.SwaggerInfo.BasePath = "/api/" + constants.Api_version
+	api := router.Group("/api/" + constants.Api_version)
 	{
+		api.GET("/", func(c *gin.Context) {
+			c.JSON(
+				http.StatusOK,
+				gin.H{"message": "API working good"},
+			)
+		})
+
 		api.POST("/token", controllers.GenerateToken)
 		api.POST("/user/register", controllers.RegisterUser)
 		secured := api.Group("/secured").Use(middlewares.Authorization())
 		{
-			secured.GET("/ping", controllers.Ping)
+			secured.GET("/", func(c *gin.Context) {
+				c.JSON(
+					http.StatusOK,
+					gin.H{"message": "This token is valid"},
+				)
+			})
+
+			secured.GET("/user", controllers.GetManyUsers)
+			secured.GET("/user/:email", controllers.GetUserByEmail)
+
+			secured.PUT("/user", controllers.UpdateUser)
+			secured.PUT("/user/update/email", controllers.UpdateUserEmail)
+			secured.PUT("/user/update/password", controllers.UpdateUserPassword)
+
+			secured.DELETE("/user/:email", controllers.DeleteUserByEmail)
 		}
+
+		api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
 	return router
 }

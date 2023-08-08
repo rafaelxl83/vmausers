@@ -21,6 +21,14 @@ type Config struct {
 		MustNumeric      bool `json:"mustNumeric"`
 		MustLowerUpper   bool `json:"mustLowerUpper"`
 	} `json:"passwordStrength"`
+	RatingBoard struct {
+		Name    string `bson:"name"`
+		Ratings []struct {
+			Rating      string `bson:"rating"`
+			MinAge      int    `bson:"minAge"`
+			Description string `bson:"description"`
+		} `json:"ratings"`
+	} `json:"ratingBoard"`
 }
 
 func NewConfig(Uri string, Replica string, Database string, caFilePath string, caKeyFile string) *Config {

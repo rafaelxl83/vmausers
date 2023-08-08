@@ -1,7 +1,8 @@
 @host = localhost:8080
+@version = v1
 
 // Generate JWT
-POST http://{{host}}/api/token HTTP/1.1
+POST http://{{host}}/api/{{version}}/token HTTP/1.1
 content-type: application/json
     
 {

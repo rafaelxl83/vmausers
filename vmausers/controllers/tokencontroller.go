@@ -14,6 +14,18 @@ type TokenRequest struct {
 	Password string `json:"password"`
 }
 
+// @BasePath /api/v1
+
+// GenerateToken godoc
+// @Summary Endpoint to generate a new JWT token
+// @Schemes
+// @Description Generates a new JWT token
+// @Tags token
+// @Accept json
+// @Produce json
+// @Param user formData models.User true "User Data"
+// @Success 200 {string} user
+// @Router /user/register [post]
 func GenerateToken(context *gin.Context) {
 	var request TokenRequest
 

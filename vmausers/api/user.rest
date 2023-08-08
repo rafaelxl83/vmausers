@@ -1,12 +1,14 @@
 @host = localhost:8080
+@version = v1
 
 // Register User
-POST http://{{host}}/api/user/register HTTP/1.1
+POST http://{{host}}/api/{{version}}/user/register HTTP/1.1
 content-type: application/json
     
 {
     "FirstName": "John",
     "LastName": "Doe",
+    "Age": 40,
     "Email": "john.doe@example.com",
     "Address": {
         "Street": "Nowhere",
@@ -19,4 +21,10 @@ content-type: application/json
     }
 }
 
+###
+
+// Access a Secured API Endpoint
+GET http://{{host}}/api/{{version}}/secured/ping HTTP/1.1
+content-type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4uZG9lIiwiZW1haWwiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImV4cCI6MTY5MTQyMDU4Nn0.PjnsoxaVfOOknuvHyTjTy7Zt4PO4vO7zzcxuNoqhGN8
 ###

@@ -21,10 +21,10 @@ func TestClientCreateUser(t *testing.T) {
 func TestClientGetUserById(t *testing.T) {
 	helper.AppConfig = Config
 
-	readUser, err := middlewares.GetUserById(TestUser.ID)
+	readUser, err := middlewares.GetUserById(TestUserId)
 	if err != nil {
 		_ = middlewares.CreateUser(&TestUser)
-		readUser, err = middlewares.GetUserById(TestUser.ID)
+		readUser, err = middlewares.GetUserById(TestUserId)
 	}
 	_ = err
 
@@ -56,7 +56,7 @@ func TestClientDeleteUser(t *testing.T) {
 func TestClientDeleteUserById(t *testing.T) {
 	helper.AppConfig = Config
 
-	err := middlewares.DeleteUserById(TestUser.ID)
+	err := middlewares.DeleteUserById(TestUserId)
 	_ = err
 
 	AssertEqual(t, err, nil)
@@ -74,9 +74,11 @@ func TestClientDeleteUserByEmail(t *testing.T) {
 func TestClientUpdateUser(t *testing.T) {
 	helper.AppConfig = Config
 
-	TestUser.FirstName = "Jhonny"
-	TestUser.Email = "john.doe_updated@example.com"
-	TestUser.Address.Street = "Nowhere, 333"
+	update := models.NewUser(
+		"Jhonny", "", 0, "john.doe_updated@example.com",
+		"Nowhere, 333", "", "", "")
+
+	TestUser.UpdateValues(*update)
 	err := middlewares.UpdateUser(&TestUser)
 	_ = err
 

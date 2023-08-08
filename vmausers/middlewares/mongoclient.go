@@ -3,6 +3,7 @@ package middlewares
 import (
 	"context"
 	"time"
+	"vmausers/constants"
 	"vmausers/database"
 	"vmausers/helper"
 	"vmausers/models"
@@ -10,14 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
-
-var user_collection = "users"
-
-func fillMissingBase(user *models.User) {
-	if user.ID.IsZero() {
-		user.ID = primitive.NewObjectID()
-	}
-}
 
 func CreateUser(user *models.User) error {
 	client, err := database.NewConnection(&helper.AppConfig)
@@ -28,14 +21,14 @@ func CreateUser(user *models.User) error {
 	db := client.Database(helper.AppConfig.Mongodb.Database)
 
 	user.ID = primitive.NewObjectID()
-	err = user.Create(context.Background(), db, user_collection, &user)
+	err = user.Create(context.Background(), db, constants.User_collection, &user)
 
 	client.Disconnect(context.Background())
 
 	return err
 }
 
-func GetUserById(id primitive.ObjectID) (*models.User, error) {
+func GetUserById(id string) (*models.User, error) {
 	client, err := database.NewConnection(&helper.AppConfig)
 	if err != nil {
 		return nil, err
@@ -43,8 +36,9 @@ func GetUserById(id primitive.ObjectID) (*models.User, error) {
 
 	db := client.Database(helper.AppConfig.Mongodb.Database)
 
+	objectId, _ := primitive.ObjectIDFromHex(id)
 	user := models.User{}
-	err = user.ReadOne(context.Background(), db, user_collection, bson.M{"_id": id}, &user)
+	err = user.ReadOne(context.Background(), db, constants.User_collection, bson.M{"_id": objectId}, &user)
 
 	client.Disconnect(context.Background())
 	return &user, err
@@ -59,10 +53,23 @@ func GetUserByEmail(email string) (*models.User, error) {
 	db := client.Database(helper.AppConfig.Mongodb.Database)
 
 	user := models.User{}
-	err = user.ReadOne(context.Background(), db, user_collection, bson.M{"email": email}, &user)
+	err = user.ReadOne(context.Background(), db, constants.User_collection, bson.M{"email": email}, &user)
 
 	client.Disconnect(context.Background())
 	return &user, err
+}
+
+func GetManyUsers() (*[]models.User, error) {
+	client, err := database.NewConnection(&helper.AppConfig)
+
+	db := client.Database(helper.AppConfig.Mongodb.Database)
+
+	user := models.User{}
+	var listOfUsers []models.User
+	err = user.ReadMany(context.Background(), db, constants.User_collection, bson.D{{}}, &listOfUsers)
+
+	client.Disconnect(context.Background())
+	return &listOfUsers, err
 }
 
 func DeleteUser(user models.User) error {
@@ -72,17 +79,18 @@ func DeleteUser(user models.User) error {
 	}
 
 	db := client.Database(helper.AppConfig.Mongodb.Database)
-	err = user.DeleteOne(context.Background(), db, user_collection, bson.M{"_id": user.ID})
+	err = user.DeleteOne(context.Background(), db, constants.User_collection, bson.M{"_id": user.ID})
 
 	client.Disconnect(context.Background())
 	return err
 }
 
-func DeleteUserById(id primitive.ObjectID) error {
-	user := models.User{
-		ID: id,
+func DeleteUserById(id string) error {
+	user, err := GetUserById(id)
+	if err != nil {
+		err = DeleteUser(*user)
 	}
-	err := DeleteUser(user)
+
 	return err
 }
 
@@ -114,7 +122,7 @@ func UpdateUser(user *models.User) error {
 			"basemodel.updated_at": primitive.NewDateTimeFromTime(time.Now()),
 		},
 	}
-	err = user.UpdateOne(context.Background(), db, user_collection, bson.M{"_id": user.ID}, update)
+	err = user.UpdateOne(context.Background(), db, constants.User_collection, bson.M{"_id": user.ID}, update)
 
 	client.Disconnect(context.Background())
 	return err
@@ -135,9 +143,31 @@ func UpdateUserPassword(user *models.User, newPass models.Password) error {
 			"basemodel.updated_at": primitive.NewDateTimeFromTime(time.Now()),
 		},
 	}
-	err = user.UpdateOne(context.Background(), db, user_collection, bson.M{"_id": user.ID}, update)
+	err = user.UpdateOne(context.Background(), db, constants.User_collection, bson.M{"_id": user.ID}, update)
 	if err != nil {
 		user.Password = newPass
+	}
+
+	client.Disconnect(context.Background())
+	return err
+}
+
+func UpdateUserEmail(user *models.User, newEmail string) error {
+	client, err := database.NewConnection(&helper.AppConfig)
+	if err != nil {
+		return err
+	}
+
+	db := client.Database(helper.AppConfig.Mongodb.Database)
+	update := bson.M{
+		"$set": bson.M{
+			"email":                newEmail,
+			"basemodel.updated_at": primitive.NewDateTimeFromTime(time.Now()),
+		},
+	}
+	err = user.UpdateOne(context.Background(), db, constants.User_collection, bson.M{"_id": user.ID}, update)
+	if err != nil {
+		user.Email = newEmail
 	}
 
 	client.Disconnect(context.Background())
