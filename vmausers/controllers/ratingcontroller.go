@@ -25,7 +25,7 @@ func getRatingProperty(age int) int {
 // @Tags rating
 // @Accept json
 // @Produce json
-// @Success 200 {array} helper.Config.RatingBoard.Ratings
+// @Success 200 {array} helper.Ratings
 // @Router /secured/rating [get]
 func GetRatingList(context *gin.Context) {
 	log.Infof("GetRatingList: [%v]", len(helper.AppConfig.RatingBoard.Ratings))
@@ -40,7 +40,7 @@ func GetRatingList(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param age path string true "An Age"
-// @Success 200 {object} helper.Config.RatingBoard.Ratings
+// @Success 200 {object} helper.Ratings
 // @Failure 204 {string} string "No Content"
 // @Failure 400 {string} string "Bad request"
 // @Router /secured/rating/byage/{age} [get]
@@ -73,7 +73,7 @@ func GetAgeRating(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param email path string true "User Email"
-// @Success 200 {object} helper.Config.RatingBoard.Ratings
+// @Success 200 {object} helper.Ratings
 // @Failure 204 {string} string "No Content"
 // @Failure 400 {string} string "Bad request"
 // @Router /secured/user/{email} [get]

@@ -7,6 +7,12 @@ import (
 
 var AppConfig Config
 
+type Ratings struct {
+	Rating      string `bson:"rating"`
+	MinAge      int    `bson:"minAge"`
+	Description string `bson:"description"`
+}
+
 type Config struct {
 	Logging struct {
 		LogFile    string `json:"logFile"`
@@ -28,12 +34,8 @@ type Config struct {
 		MustLowerUpper   bool `json:"mustLowerUpper"`
 	} `json:"passwordStrength"`
 	RatingBoard struct {
-		Name    string `bson:"name"`
-		Ratings []struct {
-			Rating      string `bson:"rating"`
-			MinAge      int    `bson:"minAge"`
-			Description string `bson:"description"`
-		} `json:"ratings"`
+		Name    string    `bson:"name"`
+		Ratings []Ratings `json:"ratings"`
 	} `json:"ratingBoard"`
 }
 

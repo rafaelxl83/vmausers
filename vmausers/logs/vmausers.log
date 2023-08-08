@@ -47,3 +47,35 @@ time="Tue, 08 Aug 2023 19:19:00 -0300" level=info msg=Authorized
 time="Tue, 08 Aug 2023 19:19:04 -0300" level=info msg="GetUserRatingByEmail: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
 time="Tue, 08 Aug 2023 19:29:07 -0300" level=error msg="Authorization: Unauthorized [v&{%!](base64.CorruptInputError=43) %!](uint32=4) %!](string=)}"
 time="Tue, 08 Aug 2023 19:31:11 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:54:49 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:54:49 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:54:56 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:54:56 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:55:01 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:02 -0300" level=info msg="GetUserRatingByEmail: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:55:10 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:10 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:55:10 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:10 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:55:11 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:11 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:55:12 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:12 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:55:13 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:13 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:55:13 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:13 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:55:14 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:14 -0300" level=info msg="GetRatingList: [7]"
+time="Tue, 08 Aug 2023 19:55:18 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:18 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:55:19 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:19 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:55:20 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:20 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:55:20 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:20 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:55:21 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:21 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"
+time="Tue, 08 Aug 2023 19:55:22 -0300" level=info msg=Authorized
+time="Tue, 08 Aug 2023 19:55:22 -0300" level=info msg="GetAgeRating: [{Adults Only 18  is suitable for ages 18 and over, including prolonged scenes of intense violence and/or graphic sexual content. The majority of AO-rated titles are adult video games that received the rating for sexual content. There have been isolated cases of games receiving the rating for other reasons, including high-impact violence, and allowing players to gamble using real money.}]"

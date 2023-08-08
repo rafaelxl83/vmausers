@@ -21,6 +21,76 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/secured/rating": {
+            "get": {
+                "description": "Get the rating list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rating"
+                ],
+                "summary": "Endpoint to get the rating list in use",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/helper.Ratings"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/secured/rating/byage/{age}": {
+            "get": {
+                "description": "Get an rating classification depending of the required age",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rating"
+                ],
+                "summary": "Endpoint to get the rating",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "An Age",
+                        "name": "age",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Ratings"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/secured/user": {
             "get": {
                 "description": "Get a list of users",
@@ -70,8 +140,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "name": "age",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -158,6 +227,12 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.User"
                         }
                     },
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "400": {
                         "description": "Bad request",
                         "schema": {
@@ -200,8 +275,14 @@ const docTemplate = `{
                     "200": {
                         "description": "OK"
                     },
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "400": {
-                        "description": "Bad request",
+                        "description": "Bad Request",
                         "schema": {
                             "type": "string"
                         }
@@ -273,8 +354,8 @@ const docTemplate = `{
                     "200": {
                         "description": "OK"
                     },
-                    "400": {
-                        "description": "Bad request",
+                    "204": {
+                        "description": "No Content",
                         "schema": {
                             "type": "string"
                         }
@@ -299,8 +380,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "name": "age",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -342,8 +422,20 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.User"
                         }
                     },
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "400": {
                         "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "406": {
+                        "description": "Not Acceptable",
                         "schema": {
                             "type": "string"
                         }
@@ -381,8 +473,8 @@ const docTemplate = `{
                     "200": {
                         "description": "OK"
                     },
-                    "400": {
-                        "description": "Bad request",
+                    "204": {
+                        "description": "No Content",
                         "schema": {
                             "type": "string"
                         }
@@ -392,6 +484,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "helper.Ratings": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "minAge": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Address": {
             "type": "object",
             "properties": {
@@ -411,9 +517,6 @@ const docTemplate = `{
         },
         "models.Password": {
             "type": "object",
-            "required": [
-                "encryptedPass"
-            ],
             "properties": {
                 "createdAt": {
                     "type": "string"
@@ -429,11 +532,8 @@ const docTemplate = `{
         "models.User": {
             "type": "object",
             "required": [
-                "address",
-                "age",
                 "email",
-                "firstName",
-                "password"
+                "firstName"
             ],
             "properties": {
                 "address": {
