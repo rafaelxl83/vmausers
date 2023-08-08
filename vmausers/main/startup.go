@@ -13,7 +13,7 @@ import (
 	"vmausers/helper"
 	"vmausers/middlewares"
 
-	//docs "vmausers/docs"
+	docs "vmausers/docs"
 
 	"github.com/gin-gonic/gin"
 	"github.com/julienschmidt/httprouter"
@@ -66,7 +66,7 @@ func StartRouter() *gin.Engine {
 	router.Use(cors.AllowAll())
 
 	// command <vmausers>swag init -g ./main/main.go -o ./docs
-	//docs.SwaggerInfo.BasePath = constants.Api_base_path + "/" + constants.Api_version
+	docs.SwaggerInfo.BasePath = constants.Api_base_path + "/" + constants.Api_version
 	api := router.Group(constants.Api_base_path + "/" + constants.Api_version)
 	{
 		api.GET("/", func(c *gin.Context) {
