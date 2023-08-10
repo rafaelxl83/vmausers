@@ -41,13 +41,13 @@ Total Physical Memory 32.7 GB
 The configuration properties are simple, just the essential items that would be easily managed.
 
 Configurable items:
- - **loggin**: logger property settings (lumberjack https://github.com/natefinch/lumberjack). Each property represents as follows:
+ - **loggin**: logger property settings ([lumberjack](https://github.com/natefinch/lumberjack)). Each property represents as follows:
 	- logFile: the file to write logs to. Backup log files will be retained in the same directory
 	- maxSize: is the maximum size in megabytes of the log file before it gets rotated
 	- backups: the maximum number of old log files to retain
 	- maxAge: the maximum number of days to retain old log files based on the timestamp encoded in their filename. Note that a day is defined as 24 hours and may not precisely correspond to calendar days due to daylight savings, leap seconds, etc
 
- - **mongodb**: the mongodb Atlas cloud server properties (https://github.com/mongodb/mongo-go-driver). We are using a Client with X509 authentication (https://www.mongodb.com/docs/manual/core/security-x.509/). For more detailed guidance, you can follow https://www.mongodb.com/docs/drivers/go/current/quick-start/#std-label-golang-quickstart:
+ - **mongodb**: the mongodb Atlas cloud server properties ([mongo_driver](https://github.com/mongodb/mongo-go-driver)). We are using a Client with X509 authentication [security-x.509](https://www.mongodb.com/docs/manual/core/security-x.509/). For more detailed guidance, you can follow [quick-start](https://www.mongodb.com/docs/drivers/go/current/quick-start/#std-label-golang-quickstart):
 	- serveruri: the mongoDB server address
 	- replicaSet: the name of the replica that will be used
 	- database: the database name 
@@ -112,7 +112,7 @@ Using this design approach, the following segregation was applied:
  - **View**: the user will interact through the command line interface.
  - **Controller**: the logic applied, the controller and the engine under the hood (standardizer and the parser).
 
-With this in mind was more comfortable completing the sequence diagram. Also, thinking to provide a clean and robust code, the intent of separating each action as little as possible in each method was almost entirely achieved.
+With this in mind was more comfortable completing the sequence diagram. Also, thinking of providing a clean and robust code, the intent of separating each action as little as possible in each method was almost entirely achieved.
 
 ### 2.1 Security layer
 
@@ -135,7 +135,9 @@ Will be used the Gin Routers and Middleware Implementation
 So, the REST API contains the following controllers:
  - Token Controller: This will have one endpoint that will be used to generate the JWTs. Here, the user has to send in a list of valid email/passwords.
  - User Controller: There will be a registered user endpoint, which will be used to create new users. All other endpoints will be passed through the secured layer.
- - Rating Controller: It contains the endpoints for the classification of the rating list used.
+ - Rating Controller: It contains the endpoints for user rating classification and to get the rating list used.
+
+[Swagger document](vmausers/docs/swagger.md)
  
 ### 2.2 database
 
