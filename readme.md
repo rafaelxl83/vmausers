@@ -137,7 +137,7 @@ So, the REST API contains the following controllers:
  - User Controller: There will be a registered user endpoint, which will be used to create new users. All other endpoints will be passed through the secured layer.
  - Rating Controller: It contains the endpoints for user rating classification and to get the rating list used.
 
-[Swagger document](vmausers/docs/swagger.md)
+For more details about the API is possible to check the [Swagger document](vmausers/docs/swagger.md)
  
 ### 2.2 database
 
@@ -158,7 +158,7 @@ Regarding the available time and the initial requirements, a Minimal Viable Prog
 However, there are a couple of adjustments that could bring more reliability, flexibility and usage for an API like that:
  - Instead of using direct database communication, a cache feature as a Redis would be great to add more agility and performance regarding the data available.
  - Improve security using HTTPS protocol
- - 
+ - Using all Atlas features available to monitor and increase the system's resilience.
 
 Beyond these items, thinking of an online environment would be great to design APIs to attend this program and, to be able to process a large number of requests, like a streaming situation, maybe a message hub would be required, and another evolution of this tool to support and perform good autoscaling to attend a demand. Also, items like a Redis for caching this information and gain speed. As there is no limit to ideas, see if it's legal to store the processed information and use it with an ML to predict trends and obtain analysis regarding a topic.
 
@@ -166,30 +166,38 @@ Beyond these items, thinking of an online environment would be great to design A
 
 The first thing that I did after the project examination was to idealize an activity board.
 
-I’ve tried to fit the project activities with my current job, my housekeeper duties, and the desired time that I'd like to spend with my daugther.
+I’ve tried to fit the project activities with my current job, my housekeeper duties, and the desired time that I'd like to spend with my daughter.
 
 The base requirement list was created:
  - An API is written in Go to expose CRUD operations
  - A secured layer
  - Easy way to store and manipulate the Data
  
-Creating an API in Go is fast and straightforward, and this task was completed pretty fast using the Gin Framework. The basic API was created as the secured layer using JWT.
+Creating an API in Go is straightforward, and this task was completed pretty fast using the Gin Framework. The basic API was created as the secured layer using JWT.
 
-The second part was to focus on the database. The intent was to use MongoDB as quickly as possible, like using a GORM-like integration. The mongoDB helper started to be created. The main objective is to make it as generic as possible, to be possible to use by another model beyond the User. After a few improvements, the Mongodb integration was completed with at least minor functions like create, read one/many, and update and delete one.
+The second part was to focus on the database. The intent was to use MongoDB as quickly as possible, like using a GORM-like integration. The mongoDB helper started to be created. The main objective is to make it as generic as possible, to be possible to use by another model beyond the User. After a few improvements, the Mongodb integration was completed with at least minor functions like create, read one/many, update one and delete one.
 
-The Mongo client Middleware objective is to keep all transactions atomic (https://www.mongodb.com/blog/post/performance-best-practices-transactions-and-read-write-concerns) and to provide the data manipulation layer as easy as possible and dedicated to handling the user model transactions.
+The Mongo client Middleware objective is to keep all transactions [atomic](https://www.mongodb.com/blog/post/performance-best-practices-transactions-and-read-write-concerns) and to provide the data manipulation layer as easy as possible and dedicated to handling the user model transactions.
 
-Then, the base requirements were expanded:
+After completing the base requirements, a basic API using JWT and the database layer, the conditions were expanded:
  - API to expose CRUD operations
   - Route logic, strategy and definition
-  - what should be in the secured layer
-  - keep it simple as possible
+  - What should be restricted and inside the secured layer
+  - Keep it simple as possible
+  - Auto-generate the documentation
  - Secured layer
-  - The JWT, simplest and fast enough
+  - The JWT, let it the simplest and fast enough
  - Database
   - Define the user model
   - Define the password policies and store them encrypted
   - Improve the user model design
- - The right method to start 
+ - The proper approach to start the application
   - Make the system easy to track and Monitoring
+  - Keep it lightweight and simple to use
+ - Expand the project with a practical experience
+  - What could be used as a small challenge that could increase the usage of the API and not affect the development and effort time?
+  - The rating classification comes up
+
+Everything was done within the available time, tested and ready to be shared.
+
  
