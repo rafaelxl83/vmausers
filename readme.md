@@ -91,7 +91,7 @@ Follow the sample configuraiton available:
                 "minAge": 0, 
                 "description": "Content is suitable for all ages, including minimal cartoon, fantasy or mild violence, and/or the infrequent use of mild language"
             }
-		]
+          ]
     }
 }
 ```
@@ -100,19 +100,19 @@ Only the password property has default settings. That means the system will only
 
 ## 2 Chosen architecture
 
-The initial approach adopted was to design the behavior to see how attached the understanding to the requirements was.
+The initial approach adopted was to design the behaviour to see how attached the understanding to the requirements was.
 
 So, the sequence diagram was created as follows:
 ![seqdiagram](vmausers_api_diagram-all.png)
 
-The first archiceture chosen was related with a Model View Controller aiming to meet the requirements in the construction of a project that can be scalable and that possible changes in any of the layers are made without interference in the other layers. MVC is based on the separation of data (model), user interface (view), and business logic (controller).
+The first architecture chosen was related to a Model View Controller aiming to meet the requirements in project construction that can be scalable and that possible changes in any of the layers are made without interference in the other layers. MVC is based on the separation of data (model), user interface (view), and business logic (controller).
 
-Using this design approach the following segregation was applied:
- - **Model**: items related with the data manipulation, basically entities classes.
+Using this design approach, the following segregation was applied:
+ - **Model**: items related to the data manipulation, basically entity classes.
  - **View**: the user will interact through the command line interface.
  - **Controller**: the logic applied, the controller and the engine under the hood (standardizer and the parser).
 
-With this in mind was more comfortable completing the sequence diagram. Also thinking to provide a clean and robust code, the intent of separating each action as little as possible in each method was almost entirely achieved.
+With this in mind was more comfortable completing the sequence diagram. Also, thinking to provide a clean and robust code, the intent of separating each action as little as possible in each method was almost entirely achieved.
 
 ### 2.1 Security layer
 
@@ -122,43 +122,43 @@ These tokens are used by RESTful APIs for Authentication and Information Exchang
 
 ![jwt.io](jwt.io.png)
 
-A token is consisted on 3 parts with a period: Header.Payload.Signature
+A token consisted of three parts with a period: Header.Payload.Signature
 
-The header contains the signing algorithm used such as RSA or HMAC SHA256. The payload contains the data to be exchanged. It’s usually claims sent by the server like username, email. Thhe sensitive data such as passwords should be never sent in through a JSON Web Token. The third part of the token, which is the Signature, is used to verify that the JWT has not been tampered with.
+The header contains the signing algorithm, such as RSA or HMAC SHA256. The payload includes the data to be exchanged. It’s usually claims sent by the server like username, or email. Sensitive data such as passwords should never be sent in through a JSON Web Token. The third part of the token, which is the Signature, is used to verify that the JWT has not been tampered with.
  
 ### 2.2 REST Api
 
-It was decided to use Gin Framework because it is lightweight, well-documented, and, of course, extremely fast, they advertise itself to be 40 times faster than the typical HTTP routers and is a popular framework with over 55,000 stars on GitHub. Unlike other Go web frameworks, Gin uses a custom version of HttpRouter, which means it can navigate through your API routes faster than most frameworks out there.
+It was decided to use Gin Framework because it is lightweight, well-documented, and, of course, extremely fast, they advertise itself to be 40 times faster than the typical HTTP routers and is a popular framework with over 55,000 stars on GitHub. Unlike other Go web frameworks, Gin uses a custom version of HttpRouter, which means it can navigate your API routes faster than most frameworks.
 
 Will be used the Gin Routers and Middleware Implementation
 
 So, the REST API contains the following controllers:
  - Token Controller: This will have one endpoint that will be used to generate the JWTs. Here, the user has to send in a list of valid email/passwords.
  - User Controller: There will be a registered user endpoint, which will be used to create new users. All other endpoints will be passed through the secured layer.
- - Rating Controller: It contains the endpoints to see the classification regarding the rating list used.
+ - Rating Controller: It contains the endpoints for the classification of the rating list used.
  
 ### 2.2 database
 
 The first idea was to use GORM because of the SQL Injection attacks. It is an ORM (object-relational mapper) library for Golang that claims to help developers build faster and make fewer errors. It works with relational databases and only supports four types of SQL databases.
 
-Thinking about the advantages to use a NoSQL database regarding the usual Relational Database Management System (RDBMS), a basic comparison helped to clarify and proceed with the chosen one:
- - RDBMS limitations: Scalability - Users have to scale relational database on powerful servers that are expensive and difficult to handle. To scale relational database, it has to be distributed on to multiple servers. Handling tables across different servers is difficult. Complexity: In SQL server’s data has to fit into tables anyhow. If your data doesn’t fit into tables, then you need to design your database structure that will be complex and again difficult to handle.
- - NoSQL: highly and easily scalable, designed to expand horizontally and in Horizontal scaling means that you scale by adding more machines into your pool of resources. Require less management. it supports many Features like automatic repair, easier data distribution, and simpler data models make administration and tuning requirements lesser in NoSQL. No Schema or Fixed Data model, the format or data model can be changed any time, without application disruption. And change management is a big headache in SQL. Support caching in system memory so it increases data output performance and SQL database where this has to be done using separate infrastructure.
+Thinking about the advantages of using a NoSQL database regarding the usual Relational Database Management System (RDBMS), a basic comparison helped to clarify and proceed with the chosen one:
+ - RDBMS limitations: Scalability - Users have to scale relational databases on powerful servers that are expensive and difficult to handle. To scale a relational database, it must be distributed to multiple servers. Handling tables across different servers takes a lot of work. Complexity: In SQL server’s data has to fit into tables anyhow. If your data doesn’t fit into tables, you need to design your database structure that will be complex and, again, challenging to handle.
+ - NoSQL: highly and easily scalable, designed to expand horizontally and Horizontal scaling means that you scale by adding more machines into your pool of resources. Require less management. It supports many Features like automatic repair, easier data distribution, and simpler data models, making administration and tuning requirements lesser in NoSQL. No Schema or Fixed Data model. The format or data model can be changed at anytime without application disruption. And change management is a big headache in SQL. Support caching in system memory so it increases data output performance and SQL database where this has to be done using the separate infrastructure.
 
 MongoDB is an open-source, non-relational database developed by MongoDB, Inc. MongoDB stores data as documents in a binary representation called BSON (Binary JSON). Related information is stored together for fast query access through the MongoDB query language. Fields can vary from document to document; there is no need to declare the structure of documents to the system — documents are self-describing. If a new field needs to be added to a document, then the field can be created without affecting all other documents in the collection, without updating a central system catalog, and without taking the system offline.
 
-After a careful analisys, the decision to use MongoDB-atlas cluster free tier was take as they provide the ability to scale and free of management, which saves a lot of effort.
+After a careful analysis, the decision to use MongoDB-atlas cluster free tier was taken as they provide the ability to scale and are free of management, which saves a lot of effort.
  
 ## 3 Future improvements
 
-Regarding the available time and the initial requirements a Minimal Viable Program was provided, to confirm the achievements and if the path is clear regarding the development and the delivered features.
+Regarding the available time and the initial requirements, a Minimal Viable Program was provided to confirm the achievements and if the path is clear regarding the development and the delivered features.
 
 However, there are a couple of adjustments that could bring more reliability, flexibility and usage for an API like that:
- - Instead of using a direct database communication, a cache feature as a Redis would be great to add more agility and permormance regarding the data available.
- - Improve security using htpps protocol
+ - Instead of using direct database communication, a cache feature as a Redis would be great to add more agility and performance regarding the data available.
+ - Improve security using HTTPS protocol
  - 
 
-Beyond these items, thinking of an online environment would be great to design APIs to attend this program and, to be able to process a large number of requests, like a streaming situation, maybe a message hub would be required and another evolution of this tool to support and perform good autoscaling to attend a demand. Also items like a Redis for caching this information and gain speed. As there is no limit to ideas, see if it's legal to store the processed information and use it with an ML to predict trends and obtain analysis regarding a topic.
+Beyond these items, thinking of an online environment would be great to design APIs to attend this program and, to be able to process a large number of requests, like a streaming situation, maybe a message hub would be required, and another evolution of this tool to support and perform good autoscaling to attend a demand. Also, items like a Redis for caching this information and gain speed. As there is no limit to ideas, see if it's legal to store the processed information and use it with an ML to predict trends and obtain analysis regarding a topic.
 
 # Development, thoughts and problem approaching
 
@@ -167,26 +167,26 @@ The first thing that I did after the project examination was to idealize an acti
 I’ve tried to fit the project activities with my current job, my housekeeper duties, and the desired time that I'd like to spend with my daugther.
 
 The base requirement list was created:
- - An API written in Go to expose CRUD operations
+ - An API is written in Go to expose CRUD operations
  - A secured layer
  - Easy way to store and manipulate the Data
  
-Create an API in go is fast and simple, and using the Gin Framework, this task was completed pretty fast. The basic api was created as the secured layer using JWT.
+Creating an API in Go is fast and straightforward, and this task was completed pretty fast using the Gin Framework. The basic API was created as the secured layer using JWT.
 
-The second part was to focus on the database, the intent was to use MongoBD as easy as possible, like was using a GORM like integration. The mongoDB helper started to be created. The main objective is to let it as generic as possible, to be possible to used by another models beyond te User. After a few improvements, the mongodb integration was completed with at least minor functions like create, read one/many, update and delete one.
+The second part was to focus on the database. The intent was to use MongoDB as quickly as possible, like using a GORM-like integration. The mongoDB helper started to be created. The main objective is to make it as generic as possible, to be possible to use by another model beyond the User. After a few improvements, the Mongodb integration was completed with at least minor functions like create, read one/many, and update and delete one.
 
-The mongo client Middleware objective is to keep all trasactions atomic (https://www.mongodb.com/blog/post/performance-best-practices-transactions-and-read-write-concerns) and to provide the data manipulation layer as easy as possible and dedicated to handle the user model transactions.
+The Mongo client Middleware objective is to keep all transactions atomic (https://www.mongodb.com/blog/post/performance-best-practices-transactions-and-read-write-concerns) and to provide the data manipulation layer as easy as possible and dedicated to handling the user model transactions.
 
-Then, the base requirements was expanded:
+Then, the base requirements were expanded:
  - API to expose CRUD operations
   - Route logic, strategy and definition
   - what should be in the secured layer
   - keep it simple as possible
  - Secured layer
-  - The JWT, simpliest and fast enought
+  - The JWT, simplest and fast enough
  - Database
   - Define the user model
-  - Define the password policies and store it encrypted
+  - Define the password policies and store them encrypted
   - Improve the user model design
  - The right method to start 
   - Make the system easy to track and Monitoring
