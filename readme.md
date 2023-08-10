@@ -181,22 +181,22 @@ The Mongo client Middleware objective is to keep all transactions [atomic](https
 
 After completing the base requirements, a basic API using JWT and the database layer, the conditions were expanded:
  - API to expose CRUD operations
-  - Route logic, strategy and definition
-  - What should be restricted and inside the secured layer
-  - Keep it simple as possible
-  - Auto-generate the documentation
+	- Route logic, strategy and definition
+	- What should be restricted and inside the secured layer
+	- Keep it simple as possible
+	- Auto-generate the documentation
  - Secured layer
-  - The JWT, let it the simplest and fast enough
+	- The JWT, let it the simplest and fast enough
  - Database
-  - Define the user model
-  - Define the password policies and store them encrypted
-  - Improve the user model design
+	- Define the user model
+	- Define the password policies and store them encrypted
+	- Improve the user model design
  - The proper approach to start the application
-  - Make the system easy to track and Monitoring
-  - Keep it lightweight and simple to use
+	- Make the system easy to track and Monitoring
+	- Keep it lightweight and simple to use
  - Expand the project with a practical experience
-  - What could be used as a small challenge that could increase the usage of the API and not affect the development and effort time?
-  - The rating classification comes up
+	- What could be used as a small challenge that could increase the usage of the API and not affect the development and effort time?
+	- The rating classification comes up
 
 Everything was done within the available time, tested and ready to be shared.
 
